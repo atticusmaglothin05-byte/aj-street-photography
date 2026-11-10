@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A photography portfolio.">
+  <meta name="color-scheme" content="dark">
+  <title>Photography</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#work">Skip to photographs</a>
+  <header class="header">
+    <a class="wordmark" href="./" id="wordmark">PHOTOGRAPHY</a>
+    <nav aria-label="Main navigation"><a href="#work">Selected work <span>↘</span></a><a id="instagram" hidden rel="noopener noreferrer" target="_blank">Instagram <span>↗</span></a></nav>
+  </header>
+  <main>
+    <section class="hero" aria-labelledby="heading">
+      <p class="eyebrow">A photographic portfolio</p>
+      <button class="hero-visual" id="hero-photo" type="button" aria-label="Open photograph" aria-haspopup="dialog" hidden><img id="hero-image" alt="" decoding="async" fetchpriority="high"></button>
+      <h1 id="heading">Selected<br><em>photographs.</em></h1>
+      <p class="intro" id="intro" hidden></p>
+      <div class="hero-bottom"><span id="owner" hidden></span><a href="#work" aria-label="Explore selected work">Explore <span>↓</span></a></div>
+    </section>
+    <section class="work" id="work" aria-labelledby="work-heading">
+      <header class="section-heading"><h2 id="work-heading">Selected work</h2><span class="eyebrow" id="count" hidden></span></header>
+      <div class="gallery" id="gallery"></div>
+      <div class="empty" id="empty" hidden><span class="frame-mark" aria-hidden="true"></span><p>Coming into focus.</p><span class="empty-detail">Photographs coming soon.</span></div>
+      <p class="notice" id="error" role="status" hidden>The photographs could not be loaded. Please try again.</p>
+      <noscript><p class="notice">Please enable JavaScript to view the photographs.</p></noscript>
+    </section>
+  </main>
+  <footer><a href="./" id="footer-title">PHOTOGRAPHY</a><a href="#heading">Back to top <span>↑</span></a></footer>
+  <dialog id="viewer" aria-label="Photograph viewer">
+    <div class="viewer-controls"><button id="previous" aria-label="Previous photograph">←</button><button id="next" aria-label="Next photograph">→</button><button id="close">Close <span>×</span></button></div>
+    <figure><img id="viewer-image" alt=""><figcaption id="viewer-caption" hidden></figcaption></figure>
+  </dialog>
+</body>
+</html>
