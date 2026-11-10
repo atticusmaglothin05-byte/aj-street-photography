@@ -1,5 +1,5 @@
 import { DatabaseSync } from 'node:sqlite';
-import { mkdir, readFile, writeFile, rename, rm } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, rename, rm, copyFile } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import path from 'node:path';
 import sharp from 'sharp';
@@ -17,6 +17,19 @@ export async function openStore(directory = process.env.DATA_DIR || path.join(ro
       published INTEGER NOT NULL DEFAULT 0, position INTEGER NOT NULL DEFAULT 0,
       createdAt TEXT NOT NULL
     );`);
+  // A fresh checkout can edit the committed gallery without needing the original local database.
+  if (path.resolve(directory) === path.join(root, 'data') && db.prepare('SELECT count(*) AS count FROM photos').get().count === 0) {
+    const catalog = JSON.parse(await readFile(path.join(root, 'content/gallery.json'), 'utf8'));
+    const insert = db.prepare('INSERT INTO photos VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)');
+    for (const [position, photo] of catalog.entries()) {
+      if (!/^[0-9a-f-]{36}$/.test(photo.id) || photo.src !== `media/${photo.id}.webp` || photo.thumbnail !== `media/${photo.id}-thumb.webp`) throw new Error('Invalid gallery record.');
+      const fields = normalizeFields(photo);
+      for (const source of [photo.src, photo.thumbnail]) await copyFile(path.join(root, 'public', source), path.join(directory, source));
+      insert.run(photo.id, fields.name, fields.location, fields.description, fields.alt, fields.collection, fields.date,
+        fields.date ? (photo.dateSource === 'metadata' ? 'metadata' : 'provided') : null,
+        photo.width, photo.height, 1, position, new Date().toISOString());
+    }
+  }
   const serialize = row => {
     const result = { id: row.id, width: row.width, height: row.height,
       src: `media/${row.id}.webp`, thumbnail: `media/${row.id}-thumb.webp` };
