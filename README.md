@@ -4,7 +4,7 @@ An independent photography portfolio using the Larz visual palette: near-black `
 
 ## Run the backend
 
-Use Node 24.13 or newer and pnpm. Run `pnpm install`, then `pnpm start`. The preview runs at `http://127.0.0.1:4321`. Persistent SQLite records and optimized images live in ignored `data/`. Back up this directory if retaining editable drafts is important. Originals remain in the supplied archive, outside the published site.
+Use Node 24.13 or newer and pnpm. Run `pnpm install`, then `pnpm start`. The preview runs at `http://127.0.0.1:4321`. A fresh checkout initializes its library from the committed gallery. Persistent SQLite records and optimized images live in ignored `data/`. Back up this directory if retaining editable drafts is important. Originals remain in the supplied archive, outside the published site.
 
 The public gallery starts at `/`; `GET /api/portfolio` returns published photos and settings. `GET /api/health` checks readiness.
 
